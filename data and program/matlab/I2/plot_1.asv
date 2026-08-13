@@ -1,0 +1,67 @@
+clc
+clear
+close all
+global vaccase y0 ev_12 pp
+tstart=3289;ten=5841;
+case_n=xlsread('everyday.xlsx');
+case_number=case_n(tstart:ten);  
+cox=load('qita.mat');
+ev=load('ev.mat');
+cox=cox.b0;
+ev=ev.b1;
+cox_12=cox(tstart:ten);
+ev_12=ev(tstart:ten);
+vac=load('totalvac.mat');
+vaccase=vac.v;
+y_0=load('xend_1.mat');
+y_0=y_0.xend;
+k_pre=readtable('D_pre.csv');
+k_pre=table2array(k_pre);
+days = 1:7:625*7;
+pp = spline(days, k_pre);
+phi1=1.01;
+x0=[phi1,0.01,105,800,0.004,0.65];
+y0=[y_0(1) 0 y_0(2) y_0(3) y_0(4) y_0(5) y_0(6) y_0(7) y_0(8) y_0(9) y_0(10) y_0(11) y_0(12) x0(5) y_0(13) y_0(14) y_0(15) 0];
+tend=4376;
+options = odeset('RelTol',1e-12,'AbsTol',1e-12);
+sol_e= ode45(@model_part,[0 tend],y0,options,x0);  
+x1=0:1:4375; %按周为一个时间单位
+y1=deval(sol_e,x1);
+%%绘图2017-01-01到2023-12-28
+ttend=2553;
+h2=y1(15,2:ttend+1)-y1(15,1:ttend);
+h3=y1(16,2:ttend+1)-y1(16,1:ttend);
+h4=y1(18,2:ttend+1)-y1(18,1:ttend);
+
+vac_week=day_2_week(h4,)
+% figure(1)
+% plot(h2)
+% figure(2)
+% plot(h3)
+% figure(3)
+% plot(h4)
+
+h1=h2+h3;
+t_vac=datetime(2017,1,1):days(1):datetime(2023,12,28);
+figure(1)
+plot(t_vac,h4,'b');
+hold on
+plot(t_vac,vaccase(1:2553),'r*')
+figure(2)
+plot(t_vac,h2,'b-')
+hold on
+plot(t_vac,ev_12,'r*')
+ylabel('EV71')
+xtickformat('yyyy')
+% figure(3)
+% xishu=y1(6,:)+y1(12,:);
+% plot(t_vac,phi1.*xishu(1:2553)-0.0074)
+% x10=1:4553;
+% figure(1)
+% plot(x10,h4,'b');
+% ylabel('vaccine number')
+% figure(2)
+% plot(x10,h2,'b-')
+% ylabel('EV71')
+% figure(3)
+% plot(x10,y1(14,1:4553))
