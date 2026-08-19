@@ -1,1 +1,4 @@
-These codes and data correspond to the paper "Behavioural feedback shapes the long-term outcomes of type-specific vaccination in multiserotype pathogen systems".
+These codes and example data correspond to the paper "Behavioural feedback shapes the long-term outcomes of type-specific vaccination in multiserotype pathogen systems". Julia code fits four distinct vaccine benefit strategies using the UDE method. The MATLAB code presents ODE solutions for the no-vaccination model as well as periodic vaccination and the same four vaccine benefit strategies.
+
+Data Accessibility Statement
+The individual-level HFMD surveillance and vaccination data used in this study are maintained by the Shaanxi Provincial Center for Disease Control and Prevention (Shaanxi CDC) and are subject to institutional data-governance restrictions. The complete dataset cannot be publicly shared or redistributed. The analysis code and a limited two-year sample dataset are available; the sample data are provided only to illustrate the data structure and implementation of the analysis and do not represent the full dataset used for model calibration.
